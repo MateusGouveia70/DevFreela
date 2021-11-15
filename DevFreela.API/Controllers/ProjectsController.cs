@@ -17,7 +17,7 @@ namespace DevFreela.API.Controllers
             return Ok();
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             // return NotFound();
@@ -37,7 +37,7 @@ namespace DevFreela.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = inputModel.Id }, inputModel);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateProjectModel inputModel)
         {
             if (inputModel.Description.Length > 200)
@@ -50,7 +50,7 @@ namespace DevFreela.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             // Buscar, se não existir, retornar NotFound
@@ -59,5 +59,26 @@ namespace DevFreela.API.Controllers
 
             return NoContent();
         }
+        
+        // api/projects/2/comments post
+        [HttpPost("{id}/comments")]
+        public IActionResult PostComment(int id, [FromBody] CreateCommentModel inputModel)
+        {
+            return NoContent();
+        }
+
+        [HttpPut("{id}/start")]
+        public IActionResult StartProject(int id)
+        {
+            return NoContent();
+        }
+
+        [HttpPut("{id}/finish")]
+        public IActionResult FinishProject(int id)
+        {
+            return NoContent();
+        }
+
+       
     }
 }
