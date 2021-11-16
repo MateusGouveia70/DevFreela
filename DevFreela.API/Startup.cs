@@ -27,7 +27,11 @@ namespace DevFreela.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
+
+            services.Configure<OpeningTimeExample>(Configuration.GetSection("OpeningTime"));
+
+            services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

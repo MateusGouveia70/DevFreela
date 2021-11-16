@@ -11,11 +11,13 @@ namespace DevFreela.API.Controllers
     [Route("api/projects")]
     public class ProjectsController : ControllerBase
     {
-        private readonly OpeningTimeOption _option;
+        private readonly OpeningTimeExample _options;
 
-        public ProjectsController(IOptions<OpeningTimeOption> options)
+        public ProjectsController(IOptions<OpeningTimeExample> options, ExampleClass exampleClass)
         {
-            _option = options.Value;
+            _options = options.Value;
+
+            exampleClass = new ExampleClass { Name = "Update At ProjectController" }; 
         }
 
         // api/projects?query=net core
