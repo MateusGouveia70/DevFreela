@@ -13,8 +13,8 @@ namespace DevFreela.Core.Entities
             FullName = fullName;
             Email = email;
             BirthDate = birthDate;
+           
             Active = true;
-
             CreatedAt = DateTime.Now;
             Skills = new List<UserSkill>();
             OwnedProjects = new List<Project>();

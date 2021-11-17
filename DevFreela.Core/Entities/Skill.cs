@@ -8,7 +8,7 @@ namespace DevFreela.Core.Entities
 {
     public class Skill : BaseEntity
     {
-        public Skill(string description, DateTime createdAt)
+        public Skill(string description)
         {
             Description = description;
             CreatedAt = DateTime.Now;
