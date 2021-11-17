@@ -1,4 +1,6 @@
 ﻿using DevFreela.API.Models;
+using DevFreela.Application.InputModels;
+using DevFreela.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,51 +13,57 @@ namespace DevFreela.API.Controllers
     [Route("api/projects")]
     public class ProjectsController : ControllerBase
     {
-        private readonly OpeningTimeExample _options;
+        private readonly IProjectService _projectService;
 
-        public ProjectsController(IOptions<OpeningTimeExample> options, ExampleClass exampleClass)
+        public ProjectsController(IProjectService projectService)
         {
-            _options = options.Value;
-
-            exampleClass = new ExampleClass { Name = "Update At ProjectController" }; 
+            _projectService = projectService;
         }
 
         // api/projects?query=net core
         [HttpGet]
         public IActionResult Get(string query)
         {
-            return Ok();
+            var projects = _projectService.GetAll(query);
+
+            return Ok(projects);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            // return NotFound();
-            return Ok();
+            var project = _projectService.GetById(id);
+
+            if(project == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(project);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateProjectModel inputModel)
+        public IActionResult Post([FromBody] ProjectInputModel inputModel)
         {
             if (inputModel.Title.Length > 50)
             {
                 return BadRequest();
             }
 
-            // Cadastrar o objeto
+            var id = _projectService.Create(inputModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = inputModel.Id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id}, inputModel);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateProjectModel inputModel)
+        public IActionResult Put(int id, [FromBody] UpdateProjectInputModel inputModel)
         {
             if (inputModel.Description.Length > 200)
             {
                 return BadRequest();
             }
 
-            //Atualizar o objeto
+            _projectService.Update(inputModel);
 
             return NoContent();
         }
@@ -63,29 +71,33 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            // Buscar, se não existir, retornar NotFound
-
-            // Remover
+            _projectService.Delete(id);
 
             return NoContent();
         }
         
         // api/projects/2/comments post
         [HttpPost("{id}/comments")]
-        public IActionResult PostComment(int id, [FromBody] CreateCommentModel inputModel)
+        public IActionResult PostComment(int id, [FromBody] CommentInputModel inputModel)
         {
+            _projectService.CreateComment(inputModel);
+
             return NoContent();
         }
 
         [HttpPut("{id}/start")]
         public IActionResult StartProject(int id)
         {
+            _projectService.Start(id);
+
             return NoContent();
         }
 
         [HttpPut("{id}/finish")]
         public IActionResult FinishProject(int id)
         {
+            _projectService.Finish(id);
+
             return NoContent();
         }
 
