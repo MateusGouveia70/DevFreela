@@ -1,40 +1,27 @@
 ﻿using DevFreela.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DevFreela.Infrastructure.Persistence
 {
-    public class DevFreelaDbContext
+    public class DevFreelaDbContext : DbContext
     {
-        public DevFreelaDbContext()
+        public DevFreelaDbContext(DbContextOptions<DevFreelaDbContext> options) : base(options)
         {
-            Projects = new List<Project>
-            {
-                new Project("Meu project ASPNET Core 1", "Minha descricao de Projeto 1", 1, 1, 10000),
-                new Project("Meu project ASPNET Core 2", "Minha descricao de Projeto 2", 1, 1, 20000),
-                new Project("Meu project ASPNET Core 3", "Minha descricao de Projeto 3", 1, 1, 30000),
-            };
-
-            Users = new List<User>
-            {
-                new User("Luiz Felipe", "luisdev@luisdev.com.br", new DateTime(1992, 1, 1)),
-                new User("Robert C Martin", "robert@luisdev.com.br", new DateTime(1950, 1, 1)),
-                new User("Anderson", "anderson@luisdev.com.br", new DateTime(1980, 1, 1))
-            };
-
-            Skills = new List<Skill>
-            {
-                new Skill(".NET CORE"),
-                new Skill("C#"),
-                new Skill("SQL")
-            };
-
-            ProjectComments = new List<ProjectComment>();
-
+            
         }
-        public List<Project> Projects { get; set; }
-        public List<User> Users { get; set; }
-        public List<Skill> Skills { get; set; }
-        public List<ProjectComment> ProjectComments { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<UserSkill> UserSkills { get; set; }
+        public DbSet<ProjectComment> ProjectComments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
     }
 }

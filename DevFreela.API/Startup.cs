@@ -38,6 +38,8 @@ namespace DevFreela.API
             services.AddSingleton<DevFreelaDbContext>();
 
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ISkillIService, SkillService>();
+            services.AddScoped<IUserService, UserService>();
 
 
             services.AddControllers();
