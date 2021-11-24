@@ -17,6 +17,7 @@ namespace DevFreela.API.Controllers
             _skillService = skillService;
         }
 
+        [HttpGet]
         public IActionResult GetAll()
         {
             var skillView = _skillService.GetAll();
