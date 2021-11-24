@@ -115,14 +115,21 @@ namespace DevFreela.Application.Services.Implementations
 
         public void Start(int id)
         {
+
+            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
+
+            project.Start();
+
+
             using (var sqlConnection = new SqlConnection())
             {
                 sqlConnection.Open();
 
                 var script = "UPDATE Projects SET Status = @status, StartedAt = @startedAt WHERE Id = @id";
 
-                sqlConnection.Execute(script, new { status = project.Status })
+                sqlConnection.Execute(script, new { status = project.Status, startedAt = project.StartedAt, id });
             }
+
             /*
             var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
 
