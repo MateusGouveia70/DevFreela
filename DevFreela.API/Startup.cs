@@ -1,7 +1,9 @@
 using DevFreela.API.Models;
+using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Services.Implementations;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,10 +34,6 @@ namespace DevFreela.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.Configure<OpeningTimeExample>(Configuration.GetSection("OpeningTime"));
-
-            services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
-
             var connectionString = Configuration.GetConnectionString("DevFreelaCs");
 
             services.AddDbContext<DevFreelaDbContext>(
@@ -47,6 +45,8 @@ namespace DevFreela.API
 
 
             services.AddControllers();
+
+            services.AddMediatR(typeof(CreateProjectCommand));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevFreela.API", Version = "v1" });
