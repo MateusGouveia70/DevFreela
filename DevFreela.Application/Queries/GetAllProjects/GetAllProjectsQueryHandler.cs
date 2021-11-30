@@ -1,13 +1,9 @@
-﻿using Dapper;
-using DevFreela.Application.ViewModels;
-using DevFreela.Infrastructure.Persistence;
+﻿using DevFreela.Application.ViewModels;
+using DevFreela.Core.Repositories;
+using DevFreela.Infrastructure.Persistence.Repositories;
 using MediatR;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,25 +11,22 @@ namespace DevFreela.Application.Queries.GetAllProjects
 {
     public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, List<ProjectViewModel>>
     {
-        private readonly string _connectionString;
+        private readonly IProjectRepository _projectrepository;
 
-        public GetAllProjectsQueryHandler(IConfiguration configuration)
+        public GetAllProjectsQueryHandler(IProjectRepository projectrepository)
         {
-            _connectionString = configuration.GetConnectionString("DevFreelaCs");
+            _projectrepository = projectrepository;
         }
 
         public async Task<List<ProjectViewModel>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                sqlConnection.Open();
+            var projects = await _projectrepository.GetAll();
 
-                var script = "SELECT Id, Title, CreateAt FROM Project";
+            var projectsViewModel =  projects
+                .Select(p => new ProjectViewModel(p.Id, p.Title, p.CreatedAt))
+                .ToList();
 
-                var projects =  await sqlConnection.QueryAsync<ProjectViewModel>(script);
-
-                return projects.ToList();
-            }
+            return projectsViewModel;
         }
     }
 }
