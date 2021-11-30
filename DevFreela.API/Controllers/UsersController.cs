@@ -1,6 +1,7 @@
 ﻿using DevFreela.API.Models;
 using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.InputModels;
+using DevFreela.Application.Queries.GetUser;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Core.Entities;
 using MediatR;
@@ -27,7 +28,9 @@ namespace DevFreela.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var user = _userService.GetById(id);
+            var query = new GetUserQuery(id);
+
+            var user = _mediator.Send(query);
 
             if (user == null) return NotFound(); 
 

@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Queries\" />
+    <Folder Include="Queries\GetAllProjects\" />
+    <Folder Include="Queries\GetProject\" />
+    <Folder Include="Queries\GetUser\" />
   </ItemGroup>
 
 </Project>

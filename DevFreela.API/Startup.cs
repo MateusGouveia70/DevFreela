@@ -40,7 +40,6 @@ namespace DevFreela.API
                 options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<ISkillIService, SkillService>();
             services.AddScoped<IUserService, UserService>();
 
 
