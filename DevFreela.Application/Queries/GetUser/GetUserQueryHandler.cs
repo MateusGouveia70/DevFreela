@@ -23,7 +23,7 @@ namespace DevFreela.Application.Queries.GetUser
 
         public async Task<UserViewModel> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetById(request.Id);
+            var user = await _userRepository.GetByIdAsync(request.Id);
 
             UserViewModel userViewModel =  new UserViewModel(user.FullName,
                 user.Email);
