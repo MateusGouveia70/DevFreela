@@ -1,4 +1,4 @@
-﻿using DevFreela.Core.Services;
+﻿ using DevFreela.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

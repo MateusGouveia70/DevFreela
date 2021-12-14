@@ -9,6 +9,7 @@ namespace DevFreela.Core.Repositories
 {
     public interface IUserRepository
     {
+        Task<int> AddUserAsync(User user);
         Task<User> GetByIdAsync(int id);
         Task<User> GetUserByEmailAndPasswordAsync(string email, string passwordHash); 
     }
